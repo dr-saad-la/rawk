@@ -1,0 +1,60 @@
+[package]
+name = "rawk"
+version = "0.1.0"
+edition = "2024"
+
+authors = ["Dr. Saad Laouadi <dr.saad.laouadi@gmail.com>"]
+description = "Rawk - Modern ML project templates that rawk"
+documentation = "https://github.com/dr-saad-la/rawk"
+homepage = "https://github.com/dr-saad-la/rawk"
+repository = "https://github.com/dr-saad-la/rawk"
+license = "MIT"
+keywords = ["ml", "template", "scaffolding", "mlops", "cli"]
+categories = ["command-line-utilities", "development-tools"]
+
+[dependencies]
+anyhow = "1.0.100"
+chrono = "0.4.43"
+clap = { version = "4.5.57", features = ["derive", "cargo", "env"] }
+colored = "3.1.1"
+console = "0.16.2"
+dialoguer = "0.12.0"
+git2 = "0.20.4"
+glob = "0.3.3"
+indicatif = "0.18.3"
+inquire = "0.9.2"
+minijinja = { version = "2.15.1", features = ["builtins"] }
+pyo3 = { version = "0.28.0", features = ["extension-module"], optional = true }
+reqwest = { version = "0.13.1", features = ["blocking", "json"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+serde_yaml = "0.9.34"
+thiserror = "2.0.18"
+toml = "0.9.11"
+walkdir = "2.5.0"
+
+[[bin]]
+name = "rawk"
+path = "src/main.rs"
+
+[lib]
+name = "rawk_lib"
+path = "src/lib.rs"
+crate-type = ["lib", "cdylib"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
+[profile.dev]
+opt-level = 0
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
+rstest = "0.26.1"
+tempfile = "3.24.0"
+
+[features]
+pyo3 = ["dep:pyo3"]

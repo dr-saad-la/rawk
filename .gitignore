@@ -30,3 +30,8 @@ uv.lock
 # Temporary
 *.tmp
 *.temp
+
+
+# Added by cargo
+
+/target
