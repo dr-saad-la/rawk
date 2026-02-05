@@ -269,12 +269,12 @@ fn get_templates_dir() -> Result<PathBuf> {
     }
 
     // 3. Check relative to binary
-    if let Ok(exe_path) = std::env::current_exe() {
-        if let Some(parent) = exe_path.parent() {
-            let templates_path = parent.join("templates");
-            if templates_path.exists() && templates_path.is_dir() {
-                return Ok(templates_path);
-            }
+    if let Ok(exe_path) = std::env::current_exe()
+        && let Some(parent) = exe_path.parent()
+    {
+        let templates_path = parent.join("templates");
+        if templates_path.exists() && templates_path.is_dir() {
+            return Ok(templates_path);
         }
     }
 

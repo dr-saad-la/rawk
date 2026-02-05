@@ -1,15 +1,15 @@
 //! New command implementation
 
+use crate::{RenderContext, Renderer, Template};
 use anyhow::Result;
-use crate::{Template, RenderContext, Renderer};
 use colored::*;
-use std::path::PathBuf;
 use serde_json::json;
+use std::path::PathBuf;
 
 pub fn execute(name: &str, template: Option<&str>) -> Result<()> {
     println!("{}", "Rawk - Creating Project".green().bold());
     println!();
-    
+
     if let Some(tmpl_name) = template {
         // Load template
         let template = match Template::load(tmpl_name) {
@@ -23,18 +23,27 @@ pub fn execute(name: &str, template: Option<&str>) -> Result<()> {
                 return Err(e);
             }
         };
-        
+
         println!("{}: {}", "Project Name".bold(), name.cyan());
-        println!("{}: {}/{}", "Template".bold(), template.category.cyan(), template.name.cyan());
-        println!("{}: {}", "Description".bold(), template.config.template.description);
+        println!(
+            "{}: {}/{}",
+            "Template".bold(),
+            template.category.cyan(),
+            template.name.cyan()
+        );
+        println!(
+            "{}: {}",
+            "Description".bold(),
+            template.config.template.description
+        );
         println!();
-        
+
         // Validate template
         if let Err(e) = template.validate() {
             eprintln!("{} {}", "Template validation warning:".yellow(), e);
             println!();
         }
-        
+
         // Create render context
         let mut context = RenderContext::new(
             name.to_string(),
@@ -43,15 +52,15 @@ pub fn execute(name: &str, template: Option<&str>) -> Result<()> {
             "Your Name".to_string(),
             "your.email@example.com".to_string(),
         );
-        
+
         // Add template-specific variables with defaults
         let python_version = "3.12";
         context.add_variable("python_version".to_string(), json!(python_version));
-        
+
         // Pre-compute python_target for Ruff (3.12 -> py312)
         let python_target = format!("py{}", python_version.replace('.', ""));
         context.add_variable("python_target".to_string(), json!(python_target));
-        
+
         context.add_variable("package_manager".to_string(), json!("uv"));
         context.add_variable("model_type".to_string(), json!("classification"));
         context.add_variable("dataset_source".to_string(), json!("local"));
@@ -63,13 +72,13 @@ pub fn execute(name: &str, template: Option<&str>) -> Result<()> {
         context.add_variable("ci_cd".to_string(), json!("github"));
         context.add_variable("license".to_string(), json!("MIT"));
         context.add_variable("init_git".to_string(), json!(true));
-        
+
         // Create output directory
         let output_dir = PathBuf::from(name);
-        
+
         // Create renderer
         let renderer = Renderer::new(template, output_dir.clone(), context);
-        
+
         // Render project
         println!("{}", "📦 Generating project files...".bold());
         match renderer.render() {
@@ -89,7 +98,7 @@ pub fn execute(name: &str, template: Option<&str>) -> Result<()> {
                 eprintln!();
                 eprintln!("{} {}", "✗ Failed to generate project:".red().bold(), e);
                 eprintln!();
-                
+
                 // Better error message
                 let error_msg = e.to_string();
                 if error_msg.contains("undefined") || error_msg.contains("unknown method") {
@@ -103,9 +112,12 @@ pub fn execute(name: &str, template: Option<&str>) -> Result<()> {
                     eprintln!("{}", "Common issues:".yellow());
                     eprintln!("  - Directory already exists (use different name)");
                     eprintln!("  - Permission denied (check directory permissions)");
-                    eprintln!("  - Invalid template structure (run: rawk info {})", tmpl_name);
+                    eprintln!(
+                        "  - Invalid template structure (run: rawk info {})",
+                        tmpl_name
+                    );
                 }
-                
+
                 Err(e)
             }
         }
@@ -123,7 +135,7 @@ pub fn execute(name: &str, template: Option<&str>) -> Result<()> {
         eprintln!();
         eprintln!("{}", "See available templates:".bold());
         eprintln!("  rawk list");
-        
+
         anyhow::bail!("Template not specified");
     }
 }
