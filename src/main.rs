@@ -18,23 +18,36 @@ enum Commands {
     New {
         /// Project name
         name: String,
-        
+
         /// Template to use
         #[arg(short, long)]
         template: Option<String>,
     },
-    
+
     /// List available templates
     List {
         /// Filter by category
         #[arg(short, long)]
         category: Option<String>,
     },
-    
+
     /// Show template information
     Info {
         /// Template name
         template: String,
+    },
+    /// Search for templates
+    Search {
+        query: String,
+    },
+
+    /// Update template cache
+    Update,
+
+     /// Validate a template
+    Validate {
+        /// Template path
+        path: String,
     },
 }
 
@@ -54,6 +67,20 @@ fn main() {
             println!("{}", " Template information:".green().bold());
             rawk_lib::commands::info::execute(template)
         }
+        Some(Commands::Search { query }) => {
+            rawk_lib::commands::search::execute(query)
+        }
+        Some(Commands::Update) => {
+            println!("{}", "Updating template cache...".green().bold());
+            println!("{}", "Coming soon!".yellow());
+            Ok(())
+        }
+        Some(Commands::Validate { path }) => {
+            println!("{}", "✓ Validating template...".green().bold());
+            println!("Path: {}", path.cyan());
+            println!("{}", "Coming soon!".yellow());
+            Ok(())
+        }
         None => {
             println!("{}", "Rawk - Modern ML project templates".green().bold());
             println!();
@@ -63,6 +90,9 @@ fn main() {
             println!("  new       Create a new project");
             println!("  list      List available templates");
             println!("  info      Show template information");
+            println!("  {}   Search for templates", "search".cyan());
+            println!("  {}   Update template cache", "update".cyan());
+            println!("  {} Validate a template", "validate".cyan());
             println!();
             println!("Run 'rawk --help' for more information");
             Ok(())
