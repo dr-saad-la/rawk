@@ -11,17 +11,24 @@
 //! ## Example
 //!
 //! ```rust,no_run
-//! use rawk_lib::{Template, render};
+//! use std::path::PathBuf;
+//! use rawk_lib::{Template, Renderer, RenderContext};
 //!
 //! // Load a template
 //! let tmpl = Template::load("ml/simple-ml").unwrap();
 //!
-//! // Render template with context
-//! let context = serde_json::json!({
-//!     "project_name": "My ML Project",
-//!     "author": "Dr. Saad"
-//! });
-//! let rendered = render::render_template("{{ project_name }}", &context).unwrap();
+//! // Build a render context with project variables
+//! let context = RenderContext::new(
+//!     "My ML Project".to_string(),
+//!     "my-ml-project".to_string(),
+//!     "A simple ML project".to_string(),
+//!     "Dr. Saad".to_string(),
+//!     "saad@example.com".to_string(),
+//! );
+//!
+//! // Render the template to an output directory
+//! let renderer = Renderer::new(tmpl, PathBuf::from("my-ml-project"), context);
+//! renderer.render().unwrap();
 //! ```
 
 // Module declarations
