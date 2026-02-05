@@ -1,0 +1,9 @@
+[template]
+name = "simple-ml"
+description = "Simple machine learning project with scikit-learn"
+version = "0.1.0"
+category = "ml"
+tags = ["scikit-learn", "pandas", "jupyter"]
+
+[requirements]
+python = ">=3.10"

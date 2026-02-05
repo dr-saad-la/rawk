@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+
+{% if package_manager == 'uv' %}
+# UV
+uv.lock
+{% endif %}
+
+{% if package_manager == 'poetry' %}
+# Poetry
+poetry.lock
+{% endif %}
+
+# Data
+data/raw/*
+data/processed/*
+data/interim/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/interim/.gitkeep
+
+# Models
+models/*.pkl
+models/*.joblib
+models/*.h5
+!models/.gitkeep
+
+# Notebooks
+.ipynb_checkpoints/
+{% if use_marimo %}
+notebooks/*.py.marimo_cache/
+{% endif %}
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Tools
+.ruff_cache/
+.mypy_cache/
+
+{% if use_wandb %}
+# W&B
+wandb/
+{% endif %}
+
+{% if use_hydra %}
+# Hydra
+outputs/
+multirun/
+.hydra/
+{% endif %}
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Logs
+*.log
+logs/
