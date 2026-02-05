@@ -33,6 +33,7 @@ pub mod utils;
 
 // Re-export commonly used items
 pub use config::Config;
+pub use render::{RenderContext, Renderer};
 pub use template::Template;
 
 // Re-export command modules for easy access

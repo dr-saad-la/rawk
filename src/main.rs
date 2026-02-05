@@ -37,14 +37,12 @@ enum Commands {
         template: String,
     },
     /// Search for templates
-    Search {
-        query: String,
-    },
+    Search { query: String },
 
     /// Update template cache
     Update,
 
-     /// Validate a template
+    /// Validate a template
     Validate {
         /// Template path
         path: String,
@@ -67,9 +65,7 @@ fn main() {
             println!("{}", " Template information:".green().bold());
             rawk_lib::commands::info::execute(template)
         }
-        Some(Commands::Search { query }) => {
-            rawk_lib::commands::search::execute(query)
-        }
+        Some(Commands::Search { query }) => rawk_lib::commands::search::execute(query),
         Some(Commands::Update) => {
             println!("{}", "Updating template cache...".green().bold());
             println!("{}", "Coming soon!".yellow());

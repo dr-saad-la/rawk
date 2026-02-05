@@ -20,7 +20,7 @@ install:
 # Download/prepare data
 data:
     @echo "📊 Preparing data..."
-    {% if package_manager == 'uv' %}uv run {% endif %}python src/{{ project_slug.replace('-', '_') }}/data/prepare_data.py
+    {% if package_manager == 'uv' %}uv run {% endif %}python src/{{ python_module }}/data/prepare_data.py
     @echo "✓ Data prepared"
 
 # Run data pipeline (download, clean, split)
@@ -32,19 +32,19 @@ data-pipeline:
 # Train model
 train:
     @echo "Training model..."
-    {% if package_manager == 'uv' %}uv run {% endif %}python src/{{ project_slug.replace('-', '_') }}/models/train.py
+    {% if package_manager == 'uv' %}uv run {% endif %}python src/{{ python_module }}/models/train.py
     @echo "✓ Model trained"
 
 # Evaluate model
 evaluate:
     @echo "Evaluating model..."
-    {% if package_manager == 'uv' %}uv run {% endif %}python src/{{ project_slug.replace('-', '_') }}/models/evaluate.py
+    {% if package_manager == 'uv' %}uv run {% endif %}python src/{{ python_module }}/models/evaluate.py
     @echo "✓ Model evaluated"
 
 # Make predictions
 predict:
     @echo "Making predictions..."
-    {% if package_manager == 'uv' %}uv run {% endif %}python src/{{ project_slug.replace('-', '_') }}/models/predict.py
+    {% if package_manager == 'uv' %}uv run {% endif %}python src/{{ python_module }}/models/predict.py
     @echo "✓ Predictions complete"
 
 {% if use_marimo %}
