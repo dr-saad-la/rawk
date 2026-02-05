@@ -1,0 +1,64 @@
+"""Model prediction"""
+
+import pandas as pd
+import numpy as np
+from pathlib import Path
+import joblib
+
+
+def predict(model, X: pd.DataFrame) -> np.ndarray:
+    """Make predictions using trained model
+
+    Args:
+        model: Trained model
+        X: Features
+
+    Returns:
+        Predictions
+    """
+    predictions = model.predict(X)
+    return predictions
+
+
+def predict_proba(model, X: pd.DataFrame) -> np.ndarray:
+    """Get prediction probabilities (classification only)
+
+    Args:
+        model: Trained model
+        X: Features
+
+    Returns:
+        Prediction probabilities
+    """
+    {% if model_type == 'classification' %}
+    if hasattr(model, 'predict_proba'):
+        return model.predict_proba(X)
+    else:
+        raise AttributeError("Model doesn't support probability predictions")
+    {% else %}
+    raise NotImplementedError("Probability prediction only available for classification")
+    {% endif %}
+
+
+def main() -> None:
+    """Main prediction pipeline"""
+    print("🔮 Making predictions...")
+
+    # Example: Load model
+    # model = joblib.load("models/model.joblib")
+
+    # Example: Load data
+    # X = pd.read_parquet("data/processed/X_test.parquet")
+
+    # Example: Make predictions
+    # predictions = predict(model, X)
+
+    # Example: Save predictions
+    # pd.DataFrame({"predictions": predictions}).to_csv("predictions.csv", index=False)
+
+    print("✓ Predictions complete!")
+    print("Note: Update this script with your prediction logic")
+
+
+if __name__ == "__main__":
+    main()
